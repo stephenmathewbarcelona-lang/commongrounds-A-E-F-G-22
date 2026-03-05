@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Events List</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; line-height: 1.6; }
+        .event-item { border-bottom: 1px solid #ccc; padding: 10px 0; }
+        .event-link { font-size: 1.2em; font-weight: bold; text-decoration: none; color: #007bff; }
+        .time-info { color: #555; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Local Events</h1>
+    
+    {% for event in events %}
+        <div class="event-item">
+            <!-- Event Name -->
+            <a href="{% url 'localevents:event_detail' event.pk %}" class="event-link">
+                {{ event.title }}
+            </a>
+            <br>
+            <!-- Start and End Times -->
+            <span class="time-info">
+                <strong>Starts:</strong> {{ event.start_time|date:"F j, Y, g:i a" }} | 
+                <strong>Ends:</strong> {{ event.end_time|date:"F j, Y, g:i a" }}
+            </span>
+        </div>
+    {% empty %}
+        <p>No events found.</p>
+    {% endfor %}
+
+</body>
+</html>
