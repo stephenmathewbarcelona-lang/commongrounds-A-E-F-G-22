@@ -5,9 +5,11 @@ from .models import Book, Genre
 
 # Create your views here.
 class BooksListView(ListView):
-    model = Genre
-    template_name = "bookclub_list.html"
+    model = Book
+    template_name = "book_list.html"
+    context_object_name = "book_list"
 
 class BooksDetailView(DetailView):
-    model = Genre
-    template_name = "bookclub_detail.html"
+    model = Book
+    template_name = "book_detail.html"
+    context_object_name = "book"
