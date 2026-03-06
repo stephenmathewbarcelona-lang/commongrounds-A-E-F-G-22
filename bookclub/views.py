@@ -4,10 +4,10 @@ from django.views.generic import DetailView, ListView
 from .models import Book, Genre
 
 # Create your views here.
-class BookclubBooksView(ListView):
+class BooksListView(ListView):
     model = Genre
     template_name = "bookclub_list.html"
 
-class BookclubBooksDetailView(DetailView):
+class BooksDetailView(DetailView):
     model = Genre
     template_name = "bookclub_detail.html"
