@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class ProjectCategory(models.Model):
@@ -21,5 +22,8 @@ class Project(models.Model):
 
     class Meta:
         ordering = ['-created_on']
+
+    def get_absolute_url(self):
+        return reverse("project_detail", args=[str(self.id)])
         
    
