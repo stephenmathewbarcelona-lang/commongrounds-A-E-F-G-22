@@ -1,7 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
+
+app_name = 'localevents'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('localevents.urls')), 
+    path('', views.EventListView.as_view(), name='event_list'),
+    path('event/<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
 ]
+
