@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ event.title }} - Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; line-height: 1.6; max-width: 800px; }
+        .label { font-weight: bold; color: #333; display: block; margin-top: 15px; }
+        .value { color: #555; }
+        .meta-info { margin-top: 30px; padding-top: 10px; border-top: 1px dotted #ccc; font-size: 0.85em; color: #888; }
+        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'localevents:event_list' %}" class="back-link">&larr; Back to all events</a>
+
+    <h1>{{ event.title }}</h1>
+
+    <span class="label">Category:</span>
+    <span class="value">{{ event.category.name|default:"Uncategorized" }}</span>
+
+    <span class="label">Description:</span>
+    <div class="value">{{ event.description|linebreaks }}</div>
+
+    <span class="label">Location:</span>
+    <span class="value">{{ event.location }}</span>
+
+    <span class="label">Event Duration:</span>
+    <span class="value">
+        From: {{ event.start_time|date:"F j, Y, g:i a" }} <br>
+        To: {{ event.end_time|date:"F j, Y, g:i a" }}
+    </span>
+
+    <div class="meta-info">
+        <p><strong>Created On:</strong> {{ event.created_on|date:"F j, Y, g:i a" }}</p>
+        <p><strong>Last Updated:</strong> {{ event.updated_on|date:"F j, Y, g:i a" }}</p>
+    </div>
+
+</body>
+</html>
