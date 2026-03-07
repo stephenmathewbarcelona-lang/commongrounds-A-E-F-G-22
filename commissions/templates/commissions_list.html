@@ -1,0 +1,11 @@
+{%extends 'base.html' %}
+{%load static%}
+
+{%block content%}
+<h2>Commission Types</h2>
+<u1>
+    {% for commission_type in commission_types %}
+        <li> {{ commission_type.name }} </li>
+    {% endfor %}
+</u1>
+{%endblock%}
