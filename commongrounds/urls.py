@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include ('bookclub.urls', namespace = "bookclub")),
     path('', include ('commissions.urls', namespace = "commissions")),
+    path('', include('diyprojects.urls', namespace = "diyprojects")),
+    path('', include('localevents.urls', namespace = "localevents")),
 ]
