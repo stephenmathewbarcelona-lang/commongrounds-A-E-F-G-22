@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include ('commissions.urls', namespace = "commissions")),
     path('', include('diyprojects.urls', namespace = "diyprojects")),
     path('', include('localevents.urls', namespace = "localevents")),
+    path('', include ('merchstore.urls', namespace = "merchstore")),
 ]
