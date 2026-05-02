@@ -5,10 +5,10 @@
     
     <ul>
     {% for ProductType in productType_list %}
-        <li>{{ ProductType.name }}: <i>{{ ProductType.description }}</i></li>
+        <h4>{{ ProductType.name }}. <i>{{ ProductType.description }}</i></h4>
         <ul>
             {% for Product in ProductType.product.all %}
-            <li>{{ Product.name }}: <i>{{ Product.price }}</i> {{ Product.description }}</li>
+            <li>{{ Product.name }}. <i>php{{ Product.price }}.</i> {{ Product.description }}</li>
             {% endfor %}
         </ul>
     {% endfor %}
