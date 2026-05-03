@@ -3,9 +3,9 @@
 
 {%block content%}
 <h2>Commission Types</h2>
-<u1>
+<ul>
     {% for commission_type in commission_types %}
-        <li> {{ commission_type.name }} </li>
+        <li> {{ commission_type.name }} - {{ commission_type.description }} </li>
     {% endfor %}
-</u1>
+</ul>
 {%endblock%}
