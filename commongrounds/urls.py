@@ -24,4 +24,5 @@ urlpatterns = [
     path('diyprojects/', include('diyprojects.urls')),
     path('localevents/', include('localevents.urls')),
     path('merchstore/', include ('merchstore.urls')),
+    path('accounts/', include ('merchstore.urls')),
 ]
