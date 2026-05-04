@@ -1,0 +1,11 @@
+{%extends 'base.html' %}
+{%load static%}
+
+{%block content%}
+<h2>Update Profile Name</h2>
+<form method = "POST">
+    {%csrf_token%}
+    {{form}}
+    <input type = "submit" name = "submit" value = "Save Profile">
+</form>
+{%endblock%}

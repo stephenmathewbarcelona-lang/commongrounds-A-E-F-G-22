@@ -24,5 +24,6 @@ urlpatterns = [
     path('diyprojects/', include('diyprojects.urls')),
     path('localevents/', include('localevents.urls')),
     path('merchstore/', include ('merchstore.urls')),
-    path('accounts/', include ('merchstore.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), #Built in Registration Stuff
+    path('accounts/', include('accounts.urls')), #URL for Profile Update
 ]
