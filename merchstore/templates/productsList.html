@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Merchstore List</h1>
+
+    {% if ownedProducts %}
+        <h2>Your Products</h2>
+        <ul>
+            {% for product in ownedProducts %}
+                <li>{{ product.name }} - ₱{{ product.price }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>All Products</h2>
+    <ul>
+        {% for product in all_products %}
+            <li>{{ product.name }} - ₱{{ product.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'merchstore:productCreate' %}">Add Product</a>
+
+{% endblock %}

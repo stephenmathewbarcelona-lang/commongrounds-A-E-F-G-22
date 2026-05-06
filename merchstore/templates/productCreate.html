@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Create Product</h12>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <ul>
+            <li>Name: {{ form.name }}</li>
+            <li>Description: {{ form.description }}</li>
+            <li>Product Type: {{ form.productType }}</li>
+            <li>Price: {{ form.price }}</li>
+            <li>Stock: {{ form.stock }}</li>
+            <li>Status: {{ form.status }}</li>
+            <li>Image: {{ form.image }}</li>
+        </ul>
+
+        <button type="submit">Add Product</button>
+    </form>
+
+    <a href="{% url 'merchstore:productsList' %}">Back</a>
+
+{% endblock %}
