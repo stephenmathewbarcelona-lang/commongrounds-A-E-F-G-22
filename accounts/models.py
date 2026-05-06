@@ -9,12 +9,22 @@ class Profile(models.Model):
 
     user = models.OneToOneField(
         User,
-        on_delete = models.CASCADE
+        on_delete = models.CASCADE,
     )
     
-    email = models.TextField(
-        blank = True,
-        validators = [MinLengthValidator(256)]
+    email = models.EmailField(
+        unique=True,
+    )
+    
+    role = models.CharField(
+        max_length=255, 
+        choices=[
+            ("Market Seller", "Market Seller"),
+            ("Event Organizer", "Event Organizer"),
+            ("Book Contributor", "Book Contributor"),
+            ("Project Creator", "Project Creator"),
+            ("Commission Maker", "Commission Maker"),
+        ],
     )
     
     def __str__(self):
