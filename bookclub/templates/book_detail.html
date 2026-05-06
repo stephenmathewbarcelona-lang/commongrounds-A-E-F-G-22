@@ -3,14 +3,13 @@
 {% block content %}
     <h2>{{book.title}}</h2>
     <h3>Author/s:</h3>
-        <p>{{ book.author }}</p>
+        <p>{{book.author}}</p>
     <h3>Genre:</h3>
-        <p>{{ book.genre }} </p>
-    <h3>Published On:</h3>
+        <p>{{book.genre}} </p>
+    <h3>Published:</h3>
         <p>{{book.publication_year}}</p>
-    <h3>Page Created On:</h3>
+    <h3>Page Created:</h3>
         <p>{{book.created_on}}</p>
-    <h3>Page Updated On:</h3>
+    <h3>Page Last Update:</h3>
         <p>{{book.updated_on}}</p>
-
 {% endblock %}

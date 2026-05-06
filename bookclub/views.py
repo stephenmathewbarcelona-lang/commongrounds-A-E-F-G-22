@@ -13,3 +13,18 @@ class BooksDetailView(DetailView):
     model = Book
     template_name = "book_detail.html"
     context_object_name = "book"
+
+class BookCreateView(DetailView):
+    model = Book
+    template_name = "book_create.html"
+    context_object_name = "book"
+
+class BookUpdateView(DetailView):
+    model = Book
+    template_name = "book_update.html"
+    context_object_name = "book"
+
+class BookBorrowView(DetailView):
+    model = Book
+    template_name = "book_borrow.html"
+    context_object_name = "book"
