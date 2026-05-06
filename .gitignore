@@ -5,6 +5,7 @@ commongrounds/__pycache__/
 commissions/__pycache__/
 *.py[codz]
 *$py.class
+media/
 
 # C extensions
 *.so
