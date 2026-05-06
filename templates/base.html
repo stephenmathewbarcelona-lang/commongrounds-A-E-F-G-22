@@ -1,21 +1,12 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Common Grounds</title>
+    <link rel="stylesheet" href="style.css">
+    <title>{% block title %}Commongrounds{% endblock %}</title>
+    {% block styles %}{% endblock %}
 </head>
-
 <body>
-
-<header>
-    <h1>CommonGrounds DIY Projects</h1>
-
-
-    <hr>
-</header>
-
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
-
+    {%block content%}
+    {%endblock%}
 </body>
 </html>
