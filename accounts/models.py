@@ -25,6 +25,8 @@ class Profile(models.Model):
             ("Project Creator", "Project Creator"),
             ("Commission Maker", "Commission Maker"),
         ],
+        null=True,
+        blank=True,
     )
     
     def __str__(self):
