@@ -14,10 +14,10 @@
 <h3>Borrow Form:</h3>
 <form method="post">
     {% csrf_token %}
-    {{ form }}
-    {% if user.is_authenticated %}
-        {{ form.name.as_hidden }}
-    {% endif %}
-    <button type="submit" name="submit">Borrow This Book</button>
+    {{ form.as_p }}
+
+    <button type="submit">
+        Borrow This Book
+    </button>
 </form>
 {% endblock %}

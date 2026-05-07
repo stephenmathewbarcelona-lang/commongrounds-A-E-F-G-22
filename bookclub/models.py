@@ -44,7 +44,7 @@ class Book(models.Model):
         return f"{self.title}"
     
     def get_absolute_url(self):
-        return reverse('bookclub:book_detail', kwargs={"pk":self.pk})
+        return reverse('bookclub:books_detail', kwargs={"pk":self.pk})
     
     class Meta:
         ordering = ['publication_year']
@@ -56,14 +56,14 @@ class BookReview(models.Model):
         Profile, 
         on_delete = models.CASCADE,
         null = True,
-        related_name = 'bookreview'
+        related_name = 'book_reviews'
     )
     anonReviewer = models.TextField(blank=True)
     book = models.ForeignKey(
         Book, 
         on_delete = models.CASCADE,
         null = True,
-        related_name = 'bookreview'
+        related_name = 'book_reviews'
     )
     title = models.CharField()
     comment = models.TextField(blank=True)
@@ -101,4 +101,4 @@ class Borrow(models.Model):
     )
     name = models.CharField()
     date_borrowed = models.DateField()
-    date_returned = models.DateField()
+    date_to_return = models.DateField() # Changed this from date_returned because it's not when it's returned, it;s when you're supposed to return the book <3
