@@ -1,0 +1,14 @@
+<h1>{% if object %}Update{% else %}Create{% endif %} Event</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- We use as_p for simplicity, but the view handles which fields are shown -->
+    {{ form.as_p }}
+
+    <button type="submit">Save Event</button>
+    <a href="{% url 'localevents:event_list' %}">Cancel</a>
+</form>
+
+<hr>
+<p><small>Note: Organizers are automatically assigned based on your profile.</small></p>
