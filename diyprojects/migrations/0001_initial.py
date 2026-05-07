@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('accounts', '0002_profile_role_alter_profile_email_alter_profile_id'),
     ]
 
     operations = [
