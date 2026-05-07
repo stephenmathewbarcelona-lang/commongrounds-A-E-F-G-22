@@ -1,40 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ event.title }} - Details</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; line-height: 1.6; max-width: 800px; }
-        .label { font-weight: bold; color: #333; display: block; margin-top: 15px; }
-        .value { color: #555; }
-        .meta-info { margin-top: 30px; padding-top: 10px; border-top: 1px dotted #ccc; font-size: 0.85em; color: #888; }
-        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
-    </style>
-</head>
-<body>
+<h1>{{ event.title }}</h1>
 
-    <a href="{% url 'localevents:event_list' %}" class="back-link">&larr; Back to all events</a>
-
-    <h1>{{ event.title }}</h1>
-
-    <span class="label">Category:</span>
-    <span class="value">{{ event.category.name|default:"Uncategorized" }}</span>
-
-    <span class="label">Description:</span>
-    <div class="value">{{ event.description|linebreaks }}</div>
-
-    <span class="label">Location:</span>
-    <span class="value">{{ event.location }}</span>
-
-    <span class="label">Event Duration:</span>
-    <span class="value">
-        From: {{ event.start_time|date:"F j, Y, g:i a" }} <br>
-        To: {{ event.end_time|date:"F j, Y, g:i a" }}
-    </span>
-
-    <div class="meta-info">
-        <p><strong>Created On:</strong> {{ event.created_on|date:"F j, Y, g:i a" }}</p>
-        <p><strong>Last Updated:</strong> {{ event.updated_on|date:"F j, Y, g:i a" }}</p>
+<!-- Event Image Display -->
+{% if event.event_image %}
+    <div style="margin-bottom: 20px;">
+        <img src="{{ event.event_image.url }}" alt="{{ event.title }}" style="max-width: 100%; height: auto; border-radius: 8px;">
     </div>
+{% endif %}
 
-</body>
-</html>
+<!-- Event Information List -->
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+    <p><strong>Category:</strong> {{ event.category.name|default:"General" }}</p>
+    <p><strong>Status:</strong> 
+        <span style="padding: 3px 8px; border-radius: 4px; color: white; background-color: {% if event.status == 'Available' %}green{% elif event.status == 'Full' %}orange{% else %}grey{% endif %};">
+            {{ event.status }}
+        </span>
+    </p>
+    <p><strong>Organizer(s):</strong> 
+        {% for org in event.organizer.all %}
+            {{ org.user.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p><strong>Schedule:</strong> {{ event.start_time|date:"M d, Y H:i" }} - {{ event.end_time|date:"M d, Y H:i" }}</p>
+    
+    <!-- Derived information: Signups vs Capacity -->
+    <p><strong>Attendance:</strong> {{ signup_count }} / {{ event.capacity }} 
+        {% if is_full %}<span style="color: red; font-weight: bold;">(FULL)</span>{% endif %}
+    </p>
+</div>
+
+<div class="description">
+    <h3>About this Event</h3>
+    {{ event.description|linebreaks }}
+</div>
+
+<hr>
+
+<!-- SIGN UP LOGIC -->
+<div style="margin-top: 20px;">
+    {% if can_signup %}
+        <!-- If allowed, show a link styled as a button -->
+        <a href="{% url 'localevents:event_signup' event.id %}" 
+           style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">
+            Sign Up Now
+        </a>
+    {% else %}
+        <!-- Conditionally adding HTML attributes based on derived context information -->
+        <button disabled 
+                style="padding: 12px 24px; cursor: not-allowed; background-color: #6c757d; color: white; border: none; border-radius: 4px; font-weight: bold;"
+                title="{% if is_owner %}You are the organizer of this event{% elif is_full %}This event is at maximum capacity{% endif %}">
+            Sign Up (Unavailable)
+        </button>
+        <p><small style="color: #666;">
+            {% if is_owner %}
+                Note: You cannot sign up for events you organize.
+            {% elif is_full %}
+                Registration is closed because the event is full.
+            {% endif %}
+        </small></p>
+    {% endif %}
+</div>
+
+<!-- EDIT LINK LOGIC (Owner Only) -->
+{% if is_owner %}
+    <div style="margin-top: 30px; padding: 15px; border: 1px dashed #d9534f; border-radius: 5px;">
+        <h4 style="margin-top: 0; color: #d9534f;">Organizer Controls</h4>
+        <p>As the organizer, you can modify this event's details:</p>
+        <a href="{% url 'localevents:event_update' event.id %}" style="color: #d9534f; font-weight: bold; text-decoration: underline;">
+            Edit Event Information
+        </a>
+    </div>
+{% endif %}
+
+<p style="margin-top: 40px;">
+    <a href="{% url 'localevents:event_list' %}" style="text-decoration: none;">&larr; Back to All Events</a>
+</p>
+
+<!-- Metadata (Requirement: Created/Updated timestamps) -->
+<footer style="margin-top: 50px; font-size: 0.8em; color: #999;">
+    <p>Created: {{ event.created_on|date:"F d, Y" }} | Last Updated: {{ event.updated_on|date:"F d, Y" }}</p>
+</footer>
