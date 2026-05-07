@@ -5,6 +5,10 @@
 
 <h2>{{ project.title }}</h2>
 
+{% if can_edit %}
+    <p><a href="{% url 'project_update' project.pk %}">Edit Project</a></p>
+{% endif %}
+
 <p><strong>Category:</strong> {{ project.category }}</p>
 
 <h3>Description</h3>
@@ -20,6 +24,54 @@
 <strong>Created:</strong> {{ project.created_on }} <br>
 <strong>Last Updated:</strong> {{ project.updated_on }}
 </p>
+
+<p><strong>Average Rating:</strong>
+    {% if average_rating %}
+        {{ average_rating }}
+    {% else %}
+        No ratings yet.
+    {% endif %}
+</p>
+
+<p><strong>Favorites:</strong> {{ favorites_count }}</p>
+
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="favorite_submit">
+            {% if user_favorited %}Unfavorite{% else %}Favorite{% endif %}
+        </button>
+    </form>
+
+    <h3>Rate this Project</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" name="score" min="1" max="10" required>
+        <button type="submit" name="rating_submit">Submit Rating</button>
+    </form>
+
+    <h3>Review this Project</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="comment" required></textarea>
+        <input type="file" name="image">
+        <button type="submit" name="review_submit">Submit Review</button>
+    </form>
+{% endif %}
+
+<h3>Reviews</h3>
+
+{% for review in reviews %}
+    <div>
+        <p>{{ review.comment }}</p>
+
+        {% if review.image %}
+            <img src="{{ review.image.url }}" width="200">
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
 
 <br>
 
