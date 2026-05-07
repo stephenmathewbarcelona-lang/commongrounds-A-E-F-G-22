@@ -12,8 +12,8 @@
         <img src="{{ product.image.url }}" width="150">
     {% endif %}
 
-    {% if request.user.is_authenticated and (product.owner == request.user.profile) %} <!--If the user is the owner of the product...-->
-        <a href="{% url 'merchstore:product_update' product.pk %}">Edit Product</a>
+    {% if request.user.is_authenticated and product.owner == request.user.profile %} <!--If the user is the owner of the product...-->
+        <a href="{% url 'merchstore:productUpdate' product.pk %}">Edit Product</a>
     {% else %}
         <form method="post">
             {% csrf_token %}

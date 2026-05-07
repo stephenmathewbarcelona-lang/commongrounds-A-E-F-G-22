@@ -29,13 +29,16 @@ class Product(models.Model): # FOR ETHAN: Remember that 'blank=True, null=True' 
     productType = models.ForeignKey(
         ProductType,
         on_delete = models.SET_NULL,
+        null=True,
         related_name = 'product'
     )
     
     owner = models.ForeignKey(
         Profile,
         on_delete = models.CASCADE,
-        related_name = 'product'
+        related_name = 'product',
+        null=True,
+        blank=True,
     )
     
     def get_absolute_url(self):
@@ -63,6 +66,7 @@ class Transaction(models.Model):
     owner = models.ForeignKey(
         Profile,
         on_delete = models.SET_NULL,
+        null=True,
         related_name = 'transaction'
     )
     

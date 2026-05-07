@@ -37,6 +37,7 @@ class ProductsListView(ListView):
         return context
 
 class ProductDetailView(DetailView, FormMixin): 
+    model = Product
     template_name = 'productDetail.html'
     context_object_name = 'product'
     form_class = TransactionForm
@@ -81,7 +82,7 @@ class ProductDetailView(DetailView, FormMixin):
         
         return super().form_valid(form)
 
-class ProductCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView): #RoleRequiredMixin made by yours truly will automatically check if a specific role is found in your thing! Also RoleRequiredMixin already has LoginRequiredMixin so does that make LoginRequiredMixin redundant here???   
+class ProductCreateView(RoleRequiredMixin, CreateView): 
     model = Product
     template_name = 'productCreate.html'
     form_class = ProductAssembleForm
