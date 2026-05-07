@@ -7,15 +7,15 @@
         <h2>Your Products</h2>
         <ul>
             {% for product in ownedProducts %}
-                <li>{{ product.name }} - ₱{{ product.price }}</li>
+                <li><a href="{% url 'merchstore:productDetail' product.pk %}">{{ product.name }}</a>: ₱{{ product.price }} - {{ product.status }}</li>
             {% endfor %}
         </ul>
     {% endif %}
 
     <h2>All Products</h2>
     <ul>
-        {% for product in all_products %}
-            <li>{{ product.name }} - ₱{{ product.price }}</li>
+        {% for product in productsList %}
+            <li><a href="{% url 'merchstore:productDetail' product.pk %}">{{ product.name }}</a>: ₱{{ product.price }} - {{ product.status }}</li>
         {% endfor %}
     </ul>
 

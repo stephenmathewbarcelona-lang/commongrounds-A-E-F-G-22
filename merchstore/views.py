@@ -105,15 +105,17 @@ def productUpdateView(request, pk):
         form = ProductAssembleForm(request.POST, request.FILES, instance=product)
         
         if form.is_valid():
-            newProduct = form.save(commit=False)
+            product = form.save(commit=False)
             
-            if newProduct.stock == 0:
-                newProduct.status = 'Out of stock'
+            product.save()
+            
+            if product.stock == 0: # WHY ARENT YOU WORKING?
+                product.status = 'Out of stock'
             else:
-                newProduct.status = 'Available'
+                product.status = 'Available'
             
-            newProduct.save()
-            return redirect(newProduct.get_absolute_url())
+            product.save()
+            return redirect(product.get_absolute_url())
 
     else:
         form = ProductAssembleForm(instance=product)

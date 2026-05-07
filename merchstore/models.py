@@ -42,7 +42,7 @@ class Product(models.Model): # FOR ETHAN: Remember that 'blank=True, null=True' 
     )
     
     def get_absolute_url(self):
-        return reverse('merchstore:merchstore_detail', args=[self.pk])
+        return reverse('merchstore:productDetail', args=[self.pk])
     
     def __str__(self):
         return self.name
