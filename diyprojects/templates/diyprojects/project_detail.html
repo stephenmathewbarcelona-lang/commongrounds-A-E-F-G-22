@@ -6,7 +6,7 @@
 <h2>{{ project.title }}</h2>
 
 {% if can_edit %}
-    <p><a href="{% url 'project_update' project.pk %}">Edit Project</a></p>
+    <p><a href="{% url 'diyprojects:project_update' project.pk %}">Edit Project</a></p>
 {% endif %}
 
 <p><strong>Category:</strong> {{ project.category }}</p>
@@ -75,6 +75,6 @@
 
 <br>
 
-<a href="{% url 'project_list' %}">← Back to Projects</a>
+<a href="{% url 'diyprojects:project_list' %}">← Back to Projects</a>
 
 {% endblock %}

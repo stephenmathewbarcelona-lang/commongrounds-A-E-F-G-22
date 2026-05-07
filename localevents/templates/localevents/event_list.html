@@ -1,4 +1,8 @@
 <!-- localevents/templates/localevents/event_list.html -->
+{%extends 'base.html' %}
+{% load static %}
+
+{%block content%}
 <h1>Local Events</h1>
 
 <a href="{% url 'localevents:event_create' %}">Create New Event</a>
@@ -36,3 +40,5 @@
     <li>No events available.</li>
 {% endfor %}
 </ul>
+
+{%endblock%}

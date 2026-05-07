@@ -1,3 +1,7 @@
+{%extends 'base.html' %}
+{% load static %}
+
+{%block content%}
 <h1>{{ event.title }}</h1>
 
 <!-- Event Image Display -->
@@ -80,3 +84,5 @@
 <footer style="margin-top: 50px; font-size: 0.8em; color: #999;">
     <p>Created: {{ event.created_on|date:"F d, Y" }} | Last Updated: {{ event.updated_on|date:"F d, Y" }}</p>
 </footer>
+
+{%endblock%}

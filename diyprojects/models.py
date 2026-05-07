@@ -28,7 +28,7 @@ class Project(models.Model):
         ordering = ['-created_on']
 
     def get_absolute_url(self):
-        return reverse("project_detail", args=[str(self.id)])
+        return reverse("diyprojects:project_detail", args=[str(self.id)])
     
     def __str__(self):
         return self.title

@@ -18,5 +18,15 @@
     {%endif%}   
     {%block content%}
     {%endblock%}
+    
+    <br>
+    <br>
+    
+    <div>
+    {% if not request.resolver_match.url_name == 'home' %}
+        <a href="{% url 'home' %}">Back to Home</a>
+    {% endif %}
+    </div>
+
 </body>
 </html>

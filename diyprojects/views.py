@@ -73,7 +73,7 @@ def project_detail(request, pk):
                 image=request.FILES.get("image")
             )
 
-        return redirect("project_detail", pk=pk)
+        return redirect("diyprojects:project_detail", pk=pk)
 
     average_rating = ProjectRating.objects.filter(project=project).aggregate(
         Avg("score")
@@ -117,7 +117,7 @@ def project_create(request):
             steps=request.POST.get("steps"),
         )
 
-        return redirect("project_list")
+        return redirect("diyprojects:project_list")
 
     categories = ProjectCategory.objects.all()
 
@@ -132,7 +132,7 @@ def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
     if project.creator != request.user.profile:
-        return redirect("project_detail", pk=pk)
+        return redirect("diyprojects:project_detail", pk=pk)
 
     if request.method == "POST":
         project.title = request.POST.get("title")
@@ -142,7 +142,7 @@ def project_update(request, pk):
         project.steps = request.POST.get("steps")
         project.save()
 
-        return redirect("project_detail", pk=project.pk)
+        return redirect("diyprojects:project_detail", pk=project.pk)
 
     categories = ProjectCategory.objects.all()
 

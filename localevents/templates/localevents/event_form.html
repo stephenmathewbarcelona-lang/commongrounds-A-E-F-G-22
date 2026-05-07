@@ -1,3 +1,7 @@
+{%extends 'base.html' %}
+{% load static %}
+
+{%block content%}
 <h1>{% if object %}Update{% else %}Create{% endif %} Event</h1>
 
 <form method="post" enctype="multipart/form-data">
@@ -12,3 +16,5 @@
 
 <hr>
 <p><small>Note: Organizers are automatically assigned based on your profile.</small></p>
+
+{%endblock%}
