@@ -1,16 +1,77 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+    <h1>Bookclub</h1>
+
     <h2>{{book.title}}</h2>
+
     <h3>Author/s:</h3>
-        <p>{{ book.author }}</p>
+        <p>{{book.author}}</p>
     <h3>Genre:</h3>
-        <p>{{ book.genre }} </p>
-    <h3>Published On:</h3>
+        <p>{{book.genre}} </p>
+    <h3>Published:</h3>
         <p>{{book.publication_year}}</p>
-    <h3>Page Created On:</h3>
+
+    <hr>
+    <h3>Page Created:</h3>
         <p>{{book.created_on}}</p>
-    <h3>Page Updated On:</h3>
+    <h3>Page Last Update:</h3>
         <p>{{book.updated_on}}</p>
 
+    <hr>
+    <h3>Availability:</h3>
+    {% if book.available_to_borrow %}
+        <p>Available to borrow</p>
+    {% else %}
+        <p>Currently unavailable</p>
+    {% endif %}
+
+    <hr>
+    <h3>Bookmarks: {{ bookmark_count }}</h3>
+    {% if request.user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="bookmark">
+                {% if is_bookmarked %}Remove Bookmark{% else %}Bookmark{% endif %}
+            </button>
+        </form>
+    {% endif %}
+
+    <hr>
+    {% if book.available_to_borrow %}
+        <a href="{% url 'bookclub:books_borrow' book.pk %}">
+            Borrow this Book
+        </a>
+    {% else %}
+        <p>This book is currently unavailable for borrowing.</p>
+    {% endif %}
+
+    <hr>
+    <h3>Reviews</h3>
+    {% for review in book_reviews %}
+        <div>
+            <strong>{{ review.userReviewer|default:"Anonymous" }}</strong> — {{ review.title }}
+            <p>{{ review.comment }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+
+    <hr>
+    <h3>Leave a Review</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit" name="review">Submit Review</button>
+    </form>
+
+    <hr>
+    {% if is_contributor %}
+        <a href="{% url 'bookclub:books_update' book.pk %}">
+            Edit Book
+        </a>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'bookclub:books_list' %}">Back to Book List</a>
 {% endblock %}
