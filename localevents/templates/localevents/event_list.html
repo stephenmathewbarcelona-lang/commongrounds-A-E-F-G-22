@@ -1,33 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Local Events List</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; line-height: 1.6; }
-        .event-item { border-bottom: 1px solid #ccc; padding: 10px 0; }
-        .event-link { font-size: 1.2em; font-weight: bold; text-decoration: none; color: #007bff; }
-        .time-info { color: #555; font-size: 0.9em; }
-    </style>
-</head>
-<body>
-    <h1>Local Events</h1>
-    
-    {% for event in events %}
-        <div class="event-item">
-            <!-- Event Name -->
-            <a href="{% url 'localevents:event_detail' event.pk %}" class="event-link">
-                {{ event.title }}
-            </a>
-            <br>
-            <!-- Start and End Times -->
-            <span class="time-info">
-                <strong>Starts:</strong> {{ event.start_time|date:"F j, Y, g:i a" }} | 
-                <strong>Ends:</strong> {{ event.end_time|date:"F j, Y, g:i a" }}
-            </span>
-        </div>
-    {% empty %}
-        <p>No events found.</p>
-    {% endfor %}
+<!-- localevents/templates/localevents/event_list.html -->
+<h1>Local Events</h1>
 
-</body>
-</html>
+<a href="{% url 'localevents:event_create' %}">Create New Event</a>
+
+{% if user.is_authenticated %}
+    
+    {% if created_events %}
+        <h2>Events You Created</h2>
+        <ul>
+        {% for event in created_events %}
+            <li><a href="{% url 'localevents:event_detail' event.id %}">{{ event.title }}</a> (Owner)</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if signed_up_events %}
+        <h2>Events You Joined</h2>
+        <ul>
+        {% for event in signed_up_events %}
+            <li><a href="{% url 'localevents:event_detail' event.id %}">{{ event.title }}</a> (Going)</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endif %}
+
+<h2>All Events</h2>
+<ul>
+{% for event in all_events %}
+    <li>
+        <a href="{% url 'localevents:event_detail' event.id %}">{{ event.title }}</a> 
+        - {{ event.status }}
+    </li>
+{% empty %}
+    <li>No events available.</li>
+{% endfor %}
+</ul>
