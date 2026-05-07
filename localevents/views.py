@@ -72,6 +72,10 @@ class EventCreateView(RoleRequiredMixin, CreateView):
     fields = ['title', 'category', 'event_image', 'description', 'location', 'start_time', 'end_time', 'capacity', 'status']
     success_url = reverse_lazy('localevents:event_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('admin:login')
+        return super().dispatch(request, *args, **kwargs)
     def form_valid(self, form):
         response = super().form_valid(form)
         self.object.organizer.add(self.request.user.profile)
