@@ -16,10 +16,7 @@ class Event(models.Model):
     ]
     title = models.CharField(max_length=255)
     category = models.ForeignKey(EventType, on_delete=models.SET_NULL, null=True, blank=True)
-    
-    # Point to accounts.Profile
     organizer = models.ManyToManyField(Profile)
-    
     event_image = models.ImageField(upload_to='events/')
     description = models.TextField()
     location = models.CharField(max_length=255)
@@ -39,6 +36,5 @@ class Event(models.Model):
 class EventSignup(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     
-    # Point to accounts.Profile
     user_registrant = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     new_registrant = models.CharField(max_length=255, null=True, blank=True)
