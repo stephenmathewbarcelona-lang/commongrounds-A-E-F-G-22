@@ -8,6 +8,9 @@ class ProjectCategory(models.Model):
 
     class Meta:
         ordering = ['name']
+        
+    def __str__(self):
+        return self.name
 
 
 
@@ -26,6 +29,9 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse("project_detail", args=[str(self.id)])
+    
+    def __str__(self):
+        return self.title
 
 class Favorite(models.Model):
    STATUS_CHOICES = [

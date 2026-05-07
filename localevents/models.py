@@ -38,3 +38,6 @@ class EventSignup(models.Model):
     
     user_registrant = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     new_registrant = models.CharField(max_length=255, null=True, blank=True)
+    
+    def __str__(self):
+        return self.new_registrant
