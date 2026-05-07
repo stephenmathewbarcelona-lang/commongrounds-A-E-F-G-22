@@ -1,0 +1,13 @@
+<!-- localevents/signup_form.html -->
+<h1>Sign up for: {{ event.title }}</h1>
+<p><strong>Location:</strong> {{ event.location }}</p>
+<p><strong>Time:</strong> {{ event.start_time }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="name">Your Name:</label>
+    <input type="text" name="new_registrant" id="name" required>
+    <button type="submit">Confirm Signup</button>
+</form>
+
+<a href="{% url 'localevents:event_detail' event.id %}">Cancel</a>
