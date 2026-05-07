@@ -24,9 +24,9 @@ class Profile(models.Model):
             ("Book Contributor", "Book Contributor"),
             ("Project Creator", "Project Creator"),
             ("Commission Maker", "Commission Maker"),
-            ("Customer", "Customer"), # Nothingburger role
         ],
-        default="Customer"
+        null=True,
+        blank=True,
     )
     
     def __str__(self):
