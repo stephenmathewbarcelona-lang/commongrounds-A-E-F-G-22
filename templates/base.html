@@ -6,6 +6,16 @@
     {% block styles %}{% endblock %}
 </head>
 <body>
+    {% if request.user.is_authenticated %}
+        Hello, {{ request.user }}!
+        <form method = "POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type = "submit">Logout</button>
+        </form>
+    {%else%}
+        <a href = "{% url 'login' %}">Login</a>
+        <a href = "{% url 'password_reset' %}">Forgot Password</a>
+    {%endif%}   
     {%block content%}
     {%endblock%}
 </body>

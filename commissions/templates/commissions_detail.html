@@ -5,6 +5,46 @@
 <h2> {{ commission.title }} </h2>
 <p>{{ commission.description }}</p>
 <p>People Required: {{ commission.people_required }}</p>
+<p>Type: {{ commission.type }}</p>
+<p>Maker: {{ commission.maker }}</p>
 <p>Created On: {{ commission.created_on }}</p>
 <p>Updated On: {{ commission.updated_on }}</p>
+<p>Status: {{ commission.get_status_display }}</p>
+
+<h3>Jobs</h3>
+{% for job in jobs %}
+    <div>
+        <h4>{{ job.role }}</h4>
+        <p>Manpower Required: {{ job.manpower_required }}</p>
+        <p>Open Manpower: {{ job.open_manpower }}</p>
+        <p>Status: {{ job.get_status_display }}</p>
+    </div>
+    {% if user.is_authenticated %}
+        {% if job.pending_status %}
+                    <p><em>Waiting for approval.</em></p>
+                {% elif job.accepted_status %}
+                    <p><em>You have been accepted for this role.</em></p>
+                {% elif job.rejected_status %}
+                    <p><em>Your application for this role has been rejected.</em></p>
+                {% elif job.is_full %}
+                    <input type="button" value="Job Full" disabled>
+                {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="job_id" value="{{ job.id }}">Apply for this role</button>
+                    </form>
+        {% endif %}
+    {% endif %}
+{% empty %}
+    <p>No jobs available for this commission.</p>
+{% endfor %}
+
+{% if is_owner %}
+    <h4> 
+        <a href="{% url 'commissions:commissions-update' commission.pk %}"> 
+            Update your Commission 
+        </a>
+    </h4>
+{% endif %}
+
 {%endblock%}
