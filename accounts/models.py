@@ -12,9 +12,9 @@ class Profile(models.Model):
         on_delete = models.CASCADE,
     )
     
-    email = models.EmailField(
-        unique=True,
-    )
+    email = models.EmailField(unique=True,
+                              null=True, 
+                              blank=True)
     
     role = models.CharField(
         max_length=255, 

@@ -2,10 +2,8 @@ from django.db import models
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls.base import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 from .models import Commission, CommissionType, Job, JobApplication
+from accounts.mixins import RoleRequiredMixin
 from .forms import CommissionForm, JobApplicationForm, JobFormSet, JobFormSetUpdate
 
 # Create your views here.
@@ -115,10 +113,11 @@ class CommissionRequestsDetailView(DetailView):
                             kwargs={'pk': self.object.pk})
 
 
-class CommisionRequestCreateView(CreateView):
+class CommisionRequestCreateView(RoleRequiredMixin, CreateView):
     model = Commission
     template_name = "commissions_create.html"
     form_class = CommissionForm
+    required_role = 'Commission Maker'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -148,10 +147,11 @@ class CommisionRequestCreateView(CreateView):
 
 
 
-class CommisionRequestUpdateView(UpdateView):
+class CommisionRequestUpdateView(RoleRequiredMixin, UpdateView):
     model = Commission
     template_name = "commissions_update.html"
     form_class = CommissionForm
+    required_role = 'Commission Maker'
 
     def test_func(self):
         # Only the owner of the commission can update it
