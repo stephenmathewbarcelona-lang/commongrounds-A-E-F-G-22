@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Common Grounds</h1>
+
+<ul>
+    <li><a href="{% url 'bookclub:book_list' %}">Bookclub</a></li>
+    <li><a href="{% url 'merchstore:productsList' %}">Merchstore</a></li>
+    <li><a href="{% url 'commissions:commissions-list' %}">Commissions</a></li>
+    <li><a href="{% url 'localevents:event_list' %}">Local Events</a></li>
+</ul>
+
+{% endblock %}
