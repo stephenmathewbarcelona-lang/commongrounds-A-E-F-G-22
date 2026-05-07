@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import dates
-from useraccounts.models import Profile
+from accounts.models import Profile
 
 # Create your models here.
 
@@ -24,20 +24,21 @@ class Book(models.Model):
     genre = models.ForeignKey(
         Genre,
         on_delete = models.SET_NULL,
-        null=True,
+        null = True,
         related_name = 'book'
     )
     contributor = models.ForeignKey(
         Profile, 
-        on_delete = models.SET_NULL, 
+        on_delete = models.SET_NULL,
+        null = True,
         related_name = 'book'
     )
     author = models.CharField()
     synopsis = models.TextField(blank=True)
     publication_year = models.PositiveIntegerField()
-    available_to_borrow = models.BooleanField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    available_to_borrow = models.BooleanField(default = True)
+    created_on = models.DateTimeField(auto_now_add = True)
+    updated_on = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return f"{self.title}"
@@ -95,6 +96,7 @@ class Borrow(models.Model):
     borrower = models.ForeignKey(
         Profile, 
         on_delete = models.CASCADE, 
+        null = True,
         related_name = 'borrow'
     )
     name = models.CharField()
