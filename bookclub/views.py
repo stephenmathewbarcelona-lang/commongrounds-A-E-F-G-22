@@ -11,7 +11,7 @@ class BooksListView(ListView):
     model = Book
     template_name = "book_list.html"
     
-    def get_context(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['all_books'] = Book.objects.all()
         current_user = self.request.user.profile
@@ -24,22 +24,23 @@ class BooksListView(ListView):
                 bookmark__profile = current_user
             )
             context['reviewed'] = Book.objects.filter(
-                bookreview__reviewer = current_user
+                bookreview__userReviewer = current_user
             )
             context['all_books'] = Book.objects.exclude(
                 contributor = current_user
             ).exclude(
-                bookmarks__profile = current_user
+                bookmark__profile = current_user
             ).exclude(
-                bookreview__reviewer = current_user
+                bookreview__userReviewer = current_user
             )
         return context
 
 class BooksDetailView(DetailView):
     model = Book
     template_name = "book_detail.html"
+    context_object_name = "book"
 
-    def get_context(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book = self.object
         context['bookmark_count'] = Bookmark.objects.filter(
@@ -61,14 +62,16 @@ class BooksDetailView(DetailView):
         context['book_reviews'] = BookReview.objects.filter(
             book=self.get_object())
 
-        context['BookReviewForm'] = BookReviewForm
+        context['review_form'] = BookReviewForm()
 
         return context
 
     def post(self, request, *args, **kwargs):
-        current_user = self.request.user.profile
+        current_user = None # check muna if theyre logged in
+        if self.request.user.is_authenticated:
+            current_user = self.request.user.profile
 
-        if 'submit_bookmark' in request.POST:
+        if 'bookmark' in request.POST:
             bookmark = Bookmark.objects.filter(
                 book = self.get_object(),
                 profile = current_user
@@ -83,22 +86,22 @@ class BooksDetailView(DetailView):
                     date_bookmarked = date.today()
                 )
             return redirect(self.get_success_url())
-        elif 'submit_review' in request.POST:
+        elif 'review' in request.POST:
             review_form = BookReviewForm(
                 request.POST
             )
 
             if review_form.is_valid():
                 if self.get_object().book_reviews.filter(
-                    user_reviewer = current_user
+                    userReviewer = current_user
                     ).exists():
                     book_review = self.get_object().book_reviews.get(
-                        user_reviewer = current_user
+                        userReviewer = current_user
                     )
                     book_review.delete()
 
                 if self.request.user.is_authenticated:
-                    review_form.instance.user_reviewer = current_user
+                    review_form.instance.userReviewer = current_user
                 else:
                     review_form.instance.anon_reviewer = 'Anonymous'
                 review = review_form.save(commit=False)
@@ -114,8 +117,8 @@ class BooksDetailView(DetailView):
     
     def get_success_url(self):
         return reverse_lazy(
-            'bookclub:book_detail',
-            kwargs = {'pk': self.kwargs['pk']}
+            'bookclub:books_detail',
+            kwargs={'pk': self.object.pk}
         )
 
 class BookCreateView(RoleRequiredMixin, CreateView):
@@ -128,23 +131,12 @@ class BookCreateView(RoleRequiredMixin, CreateView):
         form.instance.contributor = self.request.user.profile
         response = super().form_valid(form)
         return response
-
+    
     def get_success_url(self):
-        return reverse(
-            'bookclub:book_detail',
-            kwargs={'pk': self.object.pk}
+        return reverse_lazy(
+            'bookclub:books_detail', 
+            kwargs = {'pk': self.kwargs['pk']}
         )
-
-class BookUpdateView(RoleRequiredMixin, UpdateView):
-    model = Book
-    template_name = "book_update.html"
-    form_class = BookForm
-    required_role = "Book Contributor"
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self.get_object().save()
-        return response
 
 class BookBorrowView(CreateView):
     model = Borrow
@@ -158,10 +150,17 @@ class BookBorrowView(CreateView):
         return context
 
     def form_valid(self, form):
-        response = super().form_valid(form)
         if self.request.user.is_authenticated:
-            self.borrower = self.request.user.profile
-        self.date_to_return = self.date_borrowed + timedelta(weeks=2)
-        self.book.available_to_borrow = False
-        self.get_object().save()
-        return response
+            form.instance.borrower = self.request.user.profile
+        
+        form.instance.book = Book.objects.get(pk=self.kwargs['pk'])
+        form.instance.date_returned = form.instance.date_borrowed + timedelta(weeks=2)
+        form.instance.book.available_to_borrow = False
+        form.instance.book.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy(
+            'bookclub:books_detail',
+            kwargs = {'pk': self.kwargs['pk']}
+        )
