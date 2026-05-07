@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+
+    <li>Description: {{ product.description }}</li>
+    <li>Product Type: {{ product.productType }}</li>
+    <li>Price: php{{ product.price }}</li>
+    <li>Stock: {{ product.stock }}</li>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" width="150">
+    {% endif %}
+
+    {% if request.user.is_authenticated and product.owner == request.user.profile %} <!--If the user is the owner of the product...-->
+        <a href="{% url 'merchstore:productUpdate' product.pk %}">Edit Product</a>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" {% if product.stock == 0 %} disabled {% endif %}>Buy Product</button>
+        </form>
+    {% endif %}
+
+    <a href="{% url 'merchstore:productsList' %}">Back</a>
+    
+{% endblock %}

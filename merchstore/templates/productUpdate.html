@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update {{ product.name }}</h1>
+
+    <ul>
+        <li>Description: {{ product.description }}</li>
+        <li>Product Type: {{ product.productType }}</li>
+        <li>Price: php{{ product.price }}</li>
+        <li>Stock: {{ product.stock }}</li>
+    </ul>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" width="150">
+    {% endif %}
+
+
+    <h2>New Details</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <ul>
+            <li>Name: {{ form.name }}</li>
+            <li>Description: {{ form.description }}</li>
+            <li>Product Type: {{ form.productType }}</li>
+            <li>Price: {{ form.price }}</li>
+            <li>Stock: {{ form.stock }}</li>
+            <li>Status: {{ form.status }}</li>
+            <li>Image: {{ form.image }}</li>
+        </ul>
+
+        <button type="submit">Update Product</button>
+    </form>
+
+    <a href="{% url 'merchstore:productDetail' product.pk %}">Cancel</a>
+    <a href="{% url 'merchstore:productsList' %}">Back</a>
+
+{% endblock %}

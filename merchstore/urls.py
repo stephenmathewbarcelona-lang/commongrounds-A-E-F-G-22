@@ -1,9 +1,13 @@
 from django.urls import path
-from .views import MerchStoreListView, MerchStoreDetailView
+from .views import ProductsListView, ProductDetailView, ProductCreateView, productUpdateView, CartView, TransactionslistView
 
 urlpatterns = [
-    path('items/', MerchStoreListView.as_view(), name='merchstore_list'),
-    path('item/<int:pk>/', MerchStoreDetailView.as_view(), name='merchstore_detail'),
+    path('items/', ProductsListView.as_view(), name='productsList'),
+    path('item/<int:pk>/', ProductDetailView.as_view(), name='productDetail'),
+    path('item/add/', ProductCreateView.as_view(), name='productCreate'),
+    path('item/<int:pk>/edit', productUpdateView, name='productUpdate'),
+    path('cart/', CartView.as_view(), name='cart'),
+    path('transactions/', TransactionslistView.as_view(), name='transactionsList'),
 ]
 
 app_name = 'merchstore'

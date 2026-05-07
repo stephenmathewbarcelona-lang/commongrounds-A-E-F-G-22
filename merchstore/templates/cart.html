@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>My Cart</h1>
+
+    {% for seller, transactions in sortedTransactions.items %}
+        <h2>{{ seller }}'s Products</h2>
+        <ul>
+            {% for transaction in transactions %}
+                <li>
+                    {{ transaction.amount }}x of {{ transaction.product.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% empty %}
+        <p>No Transactions :/</p>
+    {% endfor %}
+
+    <a href="{% url 'merchstore:productsList' %}">Back</a>
+
+{% endblock %}
